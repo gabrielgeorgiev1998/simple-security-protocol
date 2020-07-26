@@ -1,0 +1,1 @@
+This is supposed to be a simple implementation in Python of a Diffie-Hellman key exchange and an encryption algorithm for the sender and a decryption algorithm for the receiver.
