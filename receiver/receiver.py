@@ -1,10 +1,14 @@
 import socket
 
+#to differentiate between terminal windows
+print("Receiver")
+
+df_mod = 23
 df_secret = 3
 
 
 
-address = '127.0.0.1'
+address = '127.0.0.3'
 receiver_port = 55555
 
 middlebox_port = 55557

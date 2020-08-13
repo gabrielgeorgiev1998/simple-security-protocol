@@ -1,7 +1,7 @@
 import socket
 import threading
 
-def middlebox(address, middlebox_port, send_to_port, type):
+def middlebox(address, send_to_port, middlebox_port, type):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as middlebox_socket:
             middlebox_socket.bind((address, middlebox_port))
             print("Bound")
@@ -14,9 +14,9 @@ def middlebox(address, middlebox_port, send_to_port, type):
                 try:
                     middlebox_socket.connect((address, send_to_port))
                     connected = True
-                except:
-                    pass
-
+                except Exception as e:
+                    print(address)
+                    print(e)
             
             print(type, " socket connected to ", address, ", port ", send_to_port)
 
@@ -31,17 +31,19 @@ def middlebox(address, middlebox_port, send_to_port, type):
                     print(type, " data: ", data)
                     middlebox_socket.sendall(data)
 
-if __name__=='__main__':
-    address = '127.0.0.1'
+#to differentiate between terminal windows
+print("Middlebox")
 
-    receiver_port = 55555
-    sender_port = 55556
+address = '127.0.0.2'
 
-    receiver_mid_port = 55557
-    sender_mid_port = 55558
+receiver_port = 55555
+sender_port = 55556
 
-    sender_middlebox = threading.Thread(target=middlebox, args=(address, sender_port, sender_mid_port, 'Sender'))
-    sender_middlebox.start()
+receiver_mid_port = 55557
+sender_mid_port = 55558
 
-    receiver_middlebox = threading.Thread(target=middlebox, args=(address, receiver_port, receiver_mid_port, 'Receiver'))
-    receiver_middlebox.start()
+sender_middlebox = threading.Thread(target=middlebox, args=(address, sender_port, sender_mid_port, 'Sender'))
+sender_middlebox.start()
+
+receiver_middlebox = threading.Thread(target=middlebox, args=(address, receiver_port, receiver_mid_port, 'Receiver'))
+receiver_middlebox.start()
